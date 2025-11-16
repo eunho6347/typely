@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>Typely 성격 테스트</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Pretendard (기존 typely 톤 가정) -->
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard-dynamic-subset.css"/>
+
+  <style>
+    :root {
+      --typely-yellow: #ffd84c;
+      --typely-yellow-soft: #fff6d8;
+      --bg: #fcfcff;
+      --card-bg: #ffffff;
+      --text-main: #222222;
+      --text-sub: #6b6b6b;
+      --border-soft: #e5e5ef;
+      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.08);
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --radius-pill: 999px;
+      --transition-fast: 0.18s ease-out;
+      --max-width: 960px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: "Pretendard", system-ui, -apple-system, BlinkMacSystemFont,
+      "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, #fff8df 0, #fcfcff 36%, #f7f7ff 100%);
+      color: var(--text-main);
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* HEADER */
+
+    header {
+      width: 100%;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(12px);
+      background: rgba(252, 252, 255, 0.92);
+      border-bottom: 1px solid rgba(230, 230, 245, 0.6);
+    }
+
+    .nav-container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      font-size: 18px;
+    }
+
+    .brand-badge {
+      width: 26px;
+      height: 26px;
+      border-radius: 30%;
+      background: linear-gradient(135deg, var(--typely-yellow), #ffc857);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+    }
+
+    .nav-sub {
+      font-size: 13px;
+      color: var(--text-sub);
+    }
+
+    /* MAIN LAYOUT */
+
+    main {
+      flex: 1;
+      width: 100%;
+    }
+
+    .page {
+      max-width: var(--max-width);
+      margin: 28px auto 40px;
+      padding: 0 20px 40px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 28px;
+      padding: 26px 24px 22px;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+    }
+
+    .page-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.7fr);
+      gap: 26px;
+      align-items: stretch;
+    }
+
+    @media (max-width: 840px) {
+      .page-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .card {
+        border-radius: 22px;
+      }
+    }
+
+    /* INTRO SECTION */
+
+    .eyebrow {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-sub);
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .title-main {
+      font-size: 26px;
+      font-weight: 800;
+      line-height: 1.35;
+      margin-bottom: 8px;
+    }
+
+    .title-highlight {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 2px 10px;
+      border-radius: var(--radius-pill);
+      background: var(--typely-yellow-soft);
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .intro-sub {
+      font-size: 14px;
+      color: var(--text-sub);
+      line-height: 1.6;
+      margin-bottom: 14px;
+    }
+
+    .pill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 18px;
+    }
+
+    .pill {
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(0, 0, 0, 0.04);
+      padding: 6px 10px;
+      font-size: 12px;
+      background: rgba(255, 255, 255, 0.9);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-sub);
+    }
+
+    .pill span {
+      font-size: 14px;
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+      align-items: center;
+    }
+
+    .btn-primary {
+      border: none;
+      outline: none;
+      background: linear-gradient(135deg, #ffd84c, #ffc53d);
+      color: #1b1300;
+      font-size: 15px;
+      font-weight: 700;
+      padding: 11px 22px;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 10px 30px rgba(255, 184, 0, 0.35);
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast),
+      filter var(--transition-fast);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 36px rgba(255, 184, 0, 0.45);
+      filter: brightness(1.02);
+    }
+
+    .btn-ghost {
+      border-radius: var(--radius-pill);
+      border: 1px dashed rgba(120, 120, 160, 0.35);
+      background: transparent;
+      padding: 9px 15px;
+      font-size: 13px;
+      color: var(--text-sub);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .hint {
+      font-size: 11px;
+      color: var(--text-sub);
+      margin-top: 8px;
+      opacity: 0.86;
+    }
+
+    /* STATUS PANEL */
+
+    .status-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .status-block {
+      border-radius: 18px;
+      padding: 14px 14px 12px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(230, 230, 240, 0.8);
+    }
+
+    .status-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-sub);
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .status-value {
+      font-size: 13px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .status-bar {
+      margin-top: 8px;
+      height: 6px;
+      border-radius: 999px;
+      background: #f0f0fb;
+      overflow: hidden;
+    }
+
+    .status-bar-fill {
+      height: 100%;
+      width: 0;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #ffd84c, #ffa63d);
+      transition: width 0.25s ease-out;
+    }
+
+    .tag-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 8px;
+    }
+
+    .mini-tag {
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: var(--radius-pill);
+      background: #f8f8ff;
+      color: var(--text-sub);
+    }
+
+    /* QUIZ / RESULT SECTIONS */
+
+    section {
+      margin-top: 26px;
+    }
+
+    #quiz-section,
+    #result-section {
+      display: none;
+    }
+
+    .section-title {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+
+    .section-sub {
+      font-size: 13px;
+      color: var(--text-sub);
+      margin-bottom: 16px;
+    }
+
+    .quiz-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .quiz-step {
+      font-size: 13px;
+      color: var(--text-sub);
+      font-weight: 500;
+    }
+
+    .progress-wrap {
+      width: 100%;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(232, 232, 246, 0.9);
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      width: 0;
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #ffd84c, #ff9b4b);
+      transition: width 0.25s ease-out;
+    }
+
+    .question-text {
+      font-size: 17px;
+      font-weight: 600;
+      margin: 14px 0 16px;
+      line-height: 1.5;
+    }
+
+    .options-grid {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    @media (max-width: 640px) {
+      .options-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .option-card {
+      border-radius: var(--radius-md);
+      padding: 12px 12px 11px;
+      border: 1px solid rgba(230, 230, 245, 0.9);
+      background: rgba(255, 255, 255, 0.96);
+      cursor: pointer;
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      transition: border-color var(--transition-fast),
+      box-shadow var(--transition-fast),
+      transform var(--transition-fast),
+      background var(--transition-fast);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .option-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255, 216, 76, 0.16), transparent);
+      opacity: 0;
+      transition: opacity var(--transition-fast);
+      pointer-events: none;
+    }
+
+    .option-card:hover {
+      border-color: rgba(255, 205, 80, 0.7);
+      box-shadow: 0 10px 26px rgba(15, 23, 42, 0.08);
+      transform: translateY(-1px);
+    }
+
+    .option-card.selected {
+      border-color: #ffc53d;
+      box-shadow: 0 12px 30px rgba(255, 184, 0, 0.35);
+      background: #fff8de;
+    }
+
+    .option-card.selected::after {
+      opacity: 0.9;
+    }
+
+    .option-badge {
+      flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      border-radius: var(--radius-pill);
+      background: rgba(0, 0, 0, 0.04);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-sub);
+    }
+
+    .option-main {
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .quiz-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 14px;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-secondary {
+      border: none;
+      outline: none;
+      border-radius: var(--radius-pill);
+      padding: 9px 16px;
+      background: #f3f3ff;
+      color: var(--text-sub);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-next {
+      border: none;
+      outline: none;
+      border-radius: var(--radius-pill);
+      padding: 9px 20px;
+      background: var(--text-main);
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 10px 26px rgba(15, 23, 42, 0.4);
+      transition: transform var(--transition-fast),
+      box-shadow var(--transition-fast),
+      background var(--transition-fast),
+      opacity var(--transition-fast);
+    }
+
+    .btn-next:disabled {
+      opacity: 0.5;
+      cursor: default;
+      box-shadow: none;
+      transform: none;
+    }
+
+    .btn-next:not(:disabled):hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 32px rgba(15, 23, 42, 0.55);
+      background: #111827;
+    }
+
+    /* RESULT SECTION */
+
+    .result-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+    }
+
+    .result-label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-sub);
+    }
+
+    .result-tag {
+      border-radius: var(--radius-pill);
+      padding: 5px 11px;
+      font-size: 12px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #111827;
+      color: #fff;
+    }
+
+    .result-title {
+      font-size: 22px;
+      font-weight: 800;
+      margin: 4px 0 4px;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .result-title span.kr {
+      font-size: 20px;
+    }
+
+    .result-badge {
+      border-radius: var(--radius-pill);
+      padding: 4px 10px;
+      font-size: 11px;
+      background: var(--typely-yellow-soft);
+      color: #7a5b00;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .result-description {
+      font-size: 14px;
+      color: var(--text-sub);
+      line-height: 1.6;
+      margin: 6px 0 10px;
+    }
+
+    .result-section-block {
+      border-radius: 18px;
+      padding: 11px 12px 10px;
+      background: rgba(249, 249, 255, 0.9);
+      border: 1px solid rgba(232, 232, 245, 0.9);
+      margin-top: 8px;
+    }
+
+    .result-section-title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .keyword-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 5px;
+    }
+
+    .keyword-chip {
+      font-size: 11px;
+      border-radius: var(--radius-pill);
+      padding: 4px 9px;
+      background: #ffffff;
+      border: 1px solid rgba(225, 225, 238, 0.9);
+      color: var(--text-sub);
+    }
+
+    .result-list {
+      padding-left: 16px;
+      margin: 6px 0 4px;
+      font-size: 13px;
+      color: var(--text-sub);
+    }
+
+    .result-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .btn-outline {
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(120, 120, 160, 0.35);
+      padding: 8px 14px;
+      background: #ffffff;
+      font-size: 13px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-main);
+    }
+
+    .result-hint {
+      font-size: 11px;
+      color: var(--text-sub);
+      margin-top: 6px;
+    }
+
+    .type-strip {
+      margin-top: 18px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+    }
+
+    .type-pill {
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-size: 11px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(232, 232, 245, 0.9);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: default;
+    }
+
+    .type-pill span {
+      font-weight: 600;
+      font-size: 11px;
+    }
+
+    .type-pill.highlight {
+      border-color: #111827;
+      background: #111827;
+      color: #ffffff;
+    }
+
+    footer {
+      font-size: 11px;
+      color: var(--text-sub);
+      text-align: center;
+      padding: 14px 10px 18px;
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="nav-container">
+    <div class="brand">
+      <div class="brand-badge">T</div>
+      Typely
+      <span style="font-weight:500;font-size:11px;color:var(--text-sub);margin-left:4px;">
+          Mood & Taste Lab
+        </span>
+    </div>
+    <div class="nav-sub">
+      나만의 감정·취향 기반 웹툰/웹소설 추천
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="page">
+    <div class="page-grid">
+      <!-- LEFT: INTRO / QUIZ / RESULT -->
+      <div>
+        <div id="intro-card" class="card">
+          <div class="eyebrow">Typely Test</div>
+          <div class="title-main">
+            오늘의 당신은<br/>
+            어떤 <span style="color:#f59e0b;">콘텐츠 성향</span>인가요?
+          </div>
+          <div class="title-highlight">
+            <span>⚡ 3분 성격 테스트</span> · <span>웹툰/웹소설 취향까지</span>
+          </div>
+          <p class="intro-sub">
+            몇 가지 상황 질문에 답하면 Typely가
+            <strong>하이타입 · 공감러즈 · 탐험러즈 · 픽덕즈 · 드리머즈 · 소울리스트</strong>
+            중 어떤 타입에 가까운지 알려줘요. 결과에 맞는
+            <strong>웹툰·웹소설 스타일</strong>도 같이 추천해 줄게요.
+          </p>
+
+          <div class="pill-list">
+            <div class="pill">
+              <span>⚡</span><span>하이텐션 에너지</span>
+            </div>
+            <div class="pill">
+              <span>💙</span><span>감정 공감 스토리</span>
+            </div>
+            <div class="pill">
+              <span>🚀</span><span>새로운 세계 탐험</span>
+            </div>
+            <div class="pill">
+              <span>🦆</span><span>큐레이션 & 피크픽</span>
+            </div>
+            <div class="pill">
+              <span>🌙</span><span>몽환 · 상상력</span>
+            </div>
+            <div class="pill">
+              <span>📘</span><span>감성 서사 집중</span>
+            </div>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn-primary" id="start-btn">
+              테스트 시작하기
+              <span>→</span>
+            </button>
+            <button class="btn-ghost" id="scroll-to-types">
+              유형 설명 먼저 보기
+            </button>
+          </div>
+          <div class="hint">
+            총 8문항 · 객관식 / 결과는 Typely 계정 없이도 바로 볼 수 있어요.
+          </div>
+        </div>
+
+        <!-- QUIZ SECTION -->
+        <section id="quiz-section">
+          <div class="card" style="margin-top:18px;">
+            <div class="quiz-header">
+              <div class="quiz-step" id="quiz-step-label"></div>
+              <div class="progress-wrap">
+                <div class="progress-bar">
+                  <div class="progress-fill" id="quiz-progress"></div>
+                </div>
+              </div>
+            </div>
+            <div class="question-text" id="question-text"></div>
+
+            <div class="options-grid" id="options-container">
+              <!-- 옵션이 JS로 들어감 -->
+            </div>
+
+            <div class="quiz-footer">
+              <button class="btn-secondary" id="prev-btn">
+                ← 이전
+              </button>
+              <div style="flex:1;"></div>
+              <button class="btn-next" id="next-btn" disabled>
+                다음으로
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- RESULT SECTION -->
+        <section id="result-section">
+  <div class="card" style="margin-top:20px; padding:32px; text-align:center;">
+
+    <!-- 결과 헤더 -->
+    <div style="font-size:13px; color:#6b6b6b; letter-spacing:0.08em; margin-bottom:6px;">
+      Typely Result
+    </div>
+
+    <div style="font-size:32px; font-weight:800; margin-bottom:6px;" id="result-type-kr">
+      하이타입
+    </div>
+
+    <div style="font-size:16px; opacity:0.65; margin-bottom:20px;" id="result-type-en">
+      HypeType ⚡
+    </div>
+
+    <!-- 간단 설명 -->
+    <div style="font-size:14px; line-height:1.6; margin-bottom:26px;" id="result-description">
+      에너지 넘치고 몰입도가 높은 콘텐츠를 좋아하는 타입이에요!
+    </div>
+
+    <!-- 3가지 포인트 -->
+    <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap; margin-bottom:20px;">
+      <div style="padding:10px 14px; border-radius:14px; background:#fff6d4; font-size:13px;" id="point-1">
+        빠른 전개
+      </div>
+      <div style="padding:10px 14px; border-radius:14px; background:#eaf3ff; font-size:13px;" id="point-2">
+        액션/자극
+      </div>
+      <div style="padding:10px 14px; border-radius:14px; background:#fae3ff; font-size:13px;" id="point-3">
+        과몰입 스타일
+      </div>
+    </div>
+
+    <!-- Typely 추천 작품 -->
+    <div style="text-align:left; margin-top:30px;">
+      <div style="font-size:16px; font-weight:700; margin-bottom:10px;">
+        Typely 추천 콘텐츠
+      </div>
+
+      <div id="recommend-list" style="font-size:14px; line-height:1.7;">
+        <!-- JS로 삽입됨 -->
+      </div>
+    </div>
+
+    <button class="btn-outline" id="restart-btn" style="margin-top:30px; font-size:14px; padding:12px 20px;">
+      다시 테스트하기
+    </button>
+  </div>
+</section>
+
+      </div>
+
+      <!-- RIGHT: STATUS / TYPE SUMMARY -->
+      <aside class="status-panel">
+        <div class="status-block">
+          <div class="status-label">진행 상황</div>
+          <div class="status-value">
+            <span id="status-text">아직 테스트를 시작하지 않았어요.</span>
+            <span id="status-percent" style="font-size:11px;color:var(--text-sub);">
+              0%
+            </span>
+          </div>
+          <div class="status-bar">
+            <div class="status-bar-fill" id="status-bar-fill"></div>
+          </div>
+        </div>
+
+        <div class="status-block">
+          <div class="status-label">Typely 그룹</div>
+          <div style="font-size:13px;color:var(--text-sub);margin-bottom:4px;">
+            이번 테스트에서 사용하는 6가지 성격/취향 그룹이에요.
+          </div>
+          <div class="tag-cloud" id="type-cloud">
+            <!-- JS로 태그 생성 -->
+          </div>
+        </div>
+
+        <div class="status-block">
+          <div class="status-label">테스트 팁</div>
+          <ul style="margin:6px 0 0;padding-left:17px;font-size:12px;color:var(--text-sub);line-height:1.5;">
+            <li>“현실의 나” 기준으로, 최대한 직감적으로 골라 주세요.</li>
+            <li>정답/오답은 없고, Typely가 취향 탐색을 돕기 위한 용도예요.</li>
+            <li>베타 버전이라, 나중에 서비스 고도화하면서 문항을 더 늘릴 수 있어요.</li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </div>
+</main>
+
+<footer>
+  © Typely · 콘텐츠 취향 실험실 – 이 페이지는 프로토타입 테스트 화면입니다.
+</footer>
+
+<script>
+  // ----- 데이터 정의: Typely 6개 그룹 -----
+  const TYPE_DEFS = {
+    highType: {
+      id: "highType",
+      emoji: "⚡",
+      labelKr: "하이타입",
+      labelEn: "HypeType",
+      color: "#ffd84c",
+      keywords: ["트렌드", "열정", "에너지", "플레이"],
+      concept: "트렌드와 에너지에 몰입하는 하이텐션형.",
+      traits: [
+        "새로운 자극을 발견하면 바로 뛰어드는 편이에요.",
+        "사람들 사이에서 자연스럽게 분위기를 띄우는 역할을 해요.",
+        "루즈한 전개보다는 빠른 템포와 강한 몰입감을 선호해요.",
+        "좋아하는 분야에서는 집중력이 매우 높고, 과몰입도 자주 하는 타입이에요."
+      ],
+      recos: [
+        "한 화 한 화 텐션이 높은 액션 성장물, 배틀물, 스릴러.",
+        "주인공의 멘트와 상황이 계속 터지는 하이텐션 코믹물.",
+        "쇼츠/단편처럼 전개가 빠른 웹툰, 짧지만 임팩트 있는 웹소설."
+      ]
+    },
+    empathyLers: {
+      id: "empathyLers",
+      emoji: "💙",
+      labelKr: "공감러즈",
+      labelEn: "EmpathyLers",
+      color: "#7aa6ff",
+      keywords: ["감정", "스토리", "몰입", "감성"],
+      concept: "이야기와 감정선에 몰입하며 공감하는 감성형.",
+      traits: [
+        "캐릭터의 감정선, 심리 묘사를 천천히 따라가는 걸 좋아해요.",
+        "현실의 고민, 관계, 성장에 대한 이야기에 특히 공감해요.",
+        "눈물 버튼, 여운 남는 장면에 약한 편이에요.",
+        "감정 소모는 되지만, 그런 작품을 보고 나면 오히려 위로를 받는 느낌이에요."
+      ],
+      recos: [
+        "인물 간 관계와 대사가 중심이 되는 드라마/로맨스/힐링물.",
+        "현실적인 고민과 성장을 다루는 청춘/사회파 웹툰.",
+        "감정 묘사가 섬세한 서사형 웹소설, 1인칭 시점 작품."
+      ]
+    },
+    explorers: {
+      id: "explorers",
+      emoji: "🚀",
+      labelKr: "탐험러즈",
+      labelEn: "Explorers",
+      color: "#ff5e5e",
+      keywords: ["호기심", "신작", "발견", "실험"],
+      concept: "새로운 콘텐츠·아이디어를 탐구하며 실행하는 창의형.",
+      traits: [
+        "사람들이 잘 모르는 작품을 먼저 찾아보는 편이에요.",
+        "세계관, 설정, 콘셉트가 독특한 작품을 좋아해요.",
+        "장르를 가리지 않고, '새롭다' 싶으면 일단 시도해 보는 편이에요.",
+        "재밌어 보이는 IP가 있으면 2차 콘텐츠(굿즈, 팬아트 등)까지 찾아봐요."
+      ],
+      recos: [
+        "실험적인 연출, 독특한 콘셉트가 돋보이는 인디/신작 웹툰.",
+        "장르 믹스(판타지+SF+스릴러 등)나 세계관 확장형 스토리.",
+        "기존 클리셰를 비트는 전개, 메타픽션/게임 시스템물."
+      ]
+    },
+    pickDucks: {
+      id: "pickDucks",
+      emoji: "🦆",
+      labelKr: "픽덕즈",
+      labelEn: "PickDucks",
+      color: "#c48b4a",
+      keywords: ["큐레이션", "수집", "추천", "정리"],
+      concept: "다양한 콘텐츠를 수집하고 추천하는 피커형.",
+      traits: [
+        "플랫폼별 찜/즐겨찾기 목록을 꼼꼼하게 관리하는 편이에요.",
+        "내가 본 것 중에 '이건 진짜다' 싶은 작품을 주변에 추천하는 걸 좋아해요.",
+        "완결, 연재, 단편 등 다양한 형태의 작품을 두루 소비해요.",
+        "작품 자체뿐 아니라 작가, 세계관, 시리즈까지 한 번에 정리해 두는 편이에요."
+      ],
+      recos: [
+        "완결작, 명작 위주의 '정주행 리스트'를 채울 수 있는 웹툰/웹소설.",
+        "회차 수가 어느 정도 쌓인, 꾸준히 퀄리티 유지하는 장기연재 작품.",
+        "추천 영상/리뷰가 많은 화제작(입소문 난 작품) 탐색."
+      ]
+    },
+    dreamers: {
+      id: "dreamers",
+      emoji: "🌙",
+      labelKr: "드리머즈",
+      labelEn: "Dreamers",
+      color: "#f7b3ff",
+      keywords: ["감성", "판타지", "상상", "표현"],
+      concept: "감성적인 상상력으로 세상을 바라보는 몽상형.",
+      traits: [
+        "비현실적인 세계, 몽환적인 분위기의 작품을 좋아해요.",
+        "그림체/문체가 주는 감성, 색감, 연출에 유독 민감한 편이에요.",
+        "한 장면, 한 문장을 오래 곱씹으면서 머릿속으로 다시 그려보는 스타일이에요.",
+        "현실에서 할 수 없는 선택을 대리 만족하게 해 주는 판타지를 좋아해요."
+      ],
+      recos: [
+        "몽환적인 색감, 분위기, 은유가 풍부한 판타지·로맨스 웹툰.",
+        "문장이 예쁜 서사형 웹소설, 세계관이 감성적으로 설계된 작품.",
+        "일상+판타지, 로맨스+SF 등 감성과 상상을 동시에 자극하는 장르 믹스."
+      ]
+    },
+    soulist: {
+      id: "soulist",
+      emoji: "📘",
+      labelKr: "소울리스트",
+      labelEn: "Soulist",
+      color: "#5f8bff",
+      keywords: ["감정", "스토리", "서사", "깊이"],
+      concept: "이야기 깊은 감정과 철학적 메시지를 탐색하는 서사형.",
+      traits: [
+        "스토리의 구조, 주제, 메시지를 분석하는 걸 좋아해요.",
+        "완결 후에도 '이 작품이 말하고 싶던 건 뭐였지?'를 생각해 보는 타입이에요.",
+        "캐릭터의 선택과 그에 따른 결과를 중요하게 보는 편이에요.",
+        "클리셰여도, 설계가 잘 되어 있으면 오히려 더 좋아요."
+      ],
+      recos: [
+        "서사가 탄탄한 장편 웹툰/웹소설, 복선 회수가 깔끔한 작품.",
+        "철학적·사회적 메시지가 깔려 있는 장르물(판타지, 스릴러 등).",
+        "작가 인터뷰, 세계관 해설 등 메이킹 스토리까지 같이 즐길 수 있는 IP."
+      ]
+    }
+  };
+
+  // ----- 질문 데이터 -----
+  const QUESTIONS = [
+    {
+      text: "주말 밤, 혼자 넷충/웹툰 볼 시간이 생겼을 때 가장 끌리는 건?",
+      options: [
+        {
+          label: "“와 이거 미쳤다” 싶은 텐션의 인기 급상승 액션/코믹",
+          typeId: "highType"
+        },
+        {
+          label: "조용히 감정선에 빠져드는 드라마/힐링/관계물",
+          typeId: "empathyLers"
+        }
+      ]
+    },
+    {
+      text: "새로운 작품을 고를 때, 나와 더 가까운 쪽은?",
+      options: [
+        {
+          label: "사람들이 잘 모르는 인디/신작부터 뒤지는 편",
+          typeId: "explorers"
+        },
+        {
+          label: "검증된 명작·완결작 위주로 리스트를 채우는 편",
+          typeId: "pickDucks"
+        }
+      ]
+    },
+    {
+      text: "초반 3화를 봤을 때, 어떤 요소가 더 중요해?",
+      options: [
+        {
+          label: "세계관/설정이 얼마나 새롭고 흥미롭냐",
+          typeId: "explorers"
+        },
+        {
+          label: "캐릭터의 감정선, 관계가 얼마나 설득력 있냐",
+          typeId: "empathyLers"
+        }
+      ]
+    },
+    {
+      text: "작품을 다 보고 난 뒤, 나의 모습을 더 잘 설명하는 쪽은?",
+      options: [
+        {
+          label: "여운이 오래 남아서 장면/대사를 곱씹는다.",
+          typeId: "dreamers"
+        },
+        {
+          label: "전체 서사 구조, 메시지를 머릿속에서 정리해 본다.",
+          typeId: "soulist"
+        }
+      ]
+    },
+    {
+      text: "친구가 “웹툰/웹소설 추천 좀”이라고 했을 때?",
+      options: [
+        {
+          label: "내가 요즘 꽂힌 작품을 열정적으로 설명하며 바로 링크 날림",
+          typeId: "highType"
+        },
+        {
+          label: "상대 취향 듣고, 장단점까지 다 정리해서 몇 개 골라 줌",
+          typeId: "pickDucks"
+        }
+      ]
+    },
+    {
+      text: "내가 더 선호하는 전개 템포는?",
+      options: [
+        {
+          label: "초반부터 후두두 전개되는 빠른 템포",
+          typeId: "highType"
+        },
+        {
+          label: "천천히 쌓아가다가 어느 순간 확 터지는 서사",
+          typeId: "soulist"
+        }
+      ]
+    },
+    {
+      text: "그림체/문체를 볼 때, 나에게 더 끌리는 포인트는?",
+      options: [
+        {
+          label: "몽환적인 색감, 분위기, 감성적인 연출이 느껴지는 스타일",
+          typeId: "dreamers"
+        },
+        {
+          label: "담백하지만 감정이 정확히 전달되는 안정적인 스타일",
+          typeId: "empathyLers"
+        }
+      ]
+    },
+    {
+      text: "아직 많이 안 알려졌지만 내 기준 미친 작품을 발견했다!",
+      options: [
+        {
+          label: "내 안에만 소중히 간직하기보단 여기저기 영업하고 싶다.",
+          typeId: "highType"
+        },
+        {
+          label: "어디에 정리해 두고, 나중에 상황 맞는 친구에게 추천해 주고 싶다.",
+          typeId: "pickDucks"
+        }
+      ]
+    }
+  ];
+
+  // ----- 상태 관리 -----
+  let currentIndex = 0;
+  const answers = new Array(QUESTIONS.length).fill(null);
+
+  // DOM 요소 캐시
+  const introCard = document.getElementById("intro-card");
+  const quizSection = document.getElementById("quiz-section");
+  const resultSection = document.getElementById("result-section");
+
+  const statusTextEl = document.getElementById("status-text");
+  const statusPercentEl = document.getElementById("status-percent");
+  const statusBarFillEl = document.getElementById("status-bar-fill");
+  const typeCloudEl = document.getElementById("type-cloud");
+
+  const quizStepLabel = document.getElementById("quiz-step-label");
+  const quizProgress = document.getElementById("quiz-progress");
+  const questionText = document.getElementById("question-text");
+  const optionsContainer = document.getElementById("options-container");
+
+  const prevBtn = document.getElementById("prev-btn");
+  const nextBtn = document.getElementById("next-btn");
+
+  const restartBtn = document.getElementById("restart-btn");
+  const startBtn = document.getElementById("start-btn");
+  const scrollToTypesBtn = document.getElementById("scroll-to-types");
+
+  // ----- 초기 렌더링: 타입 태그 -----
+  function renderTypeCloud() {
+    typeCloudEl.innerHTML = "";
+
+    Object.values(TYPE_DEFS).forEach(type => {
+      const tag = document.createElement("div");
+      tag.className = "mini-tag";
+      tag.textContent = `${type.emoji} ${type.labelKr}`;
+      typeCloudEl.appendChild(tag);
+    });
+  }
+
+  renderTypeCloud();
+
+  // ----- 퀴즈 렌더링 -----
+  function renderQuestion() {
+    const q = QUESTIONS[currentIndex];
+
+    quizStepLabel.textContent = `질문 ${currentIndex + 1} / ${QUESTIONS.length}`;
+    questionText.textContent = q.text;
+
+    optionsContainer.innerHTML = "";
+    q.options.forEach((opt, idx) => {
+      const card = document.createElement("button");
+      card.type = "button";
+      card.className = "option-card";
+      if (answers[currentIndex] === idx) {
+        card.classList.add("selected");
+      }
+
+      const badge = document.createElement("div");
+      badge.className = "option-badge";
+      badge.textContent = idx === 0 ? "A" : "B";
+
+      const main = document.createElement("div");
+      main.className = "option-main";
+      main.textContent = opt.label;
+
+      card.appendChild(badge);
+      card.appendChild(main);
+
+      card.addEventListener("click", () => {
+        answers[currentIndex] = idx;
+        Array.from(optionsContainer.children).forEach(child =>
+          child.classList.remove("selected")
+        );
+        card.classList.add("selected");
+        updateProgress();
+        nextBtn.disabled = false;
+      });
+
+      optionsContainer.appendChild(card);
+    });
+
+    // 버튼 상태
+    prevBtn.disabled = currentIndex === 0;
+    nextBtn.disabled = answers[currentIndex] == null;
+
+    if (currentIndex === QUESTIONS.length - 1) {
+      nextBtn.textContent = "결과 보기";
+    } else {
+      nextBtn.textContent = "다음으로";
+    }
+  }
+
+  function updateProgress() {
+    const answeredCount = answers.filter(a => a != null).length;
+    const percent = Math.round((answeredCount / QUESTIONS.length) * 100);
+
+    statusTextEl.textContent =
+      answeredCount === 0
+        ? "아직 테스트를 시작하지 않았어요."
+        : `총 ${QUESTIONS.length}문항 중 ${answeredCount}문항을 완료했어요.`;
+    statusPercentEl.textContent = `${percent}%`;
+    statusBarFillEl.style.width = `${percent}%`;
+    quizProgress.style.width = `${((currentIndex + 1) / QUESTIONS.length) * 100}%`;
+  }
+
+  // ----- 결과 계산 -----
+  function calculateResult() {
+    const score = {};
+    Object.keys(TYPE_DEFS).forEach(id => (score[id] = 0));
+
+    answers.forEach((optIdx, qIdx) => {
+      const typeId = QUESTIONS[qIdx].options[optIdx].typeId;
+      score[typeId] += 1;
+    });
+
+    let bestTypeId = null;
+    let bestScore = -1;
+    Object.entries(score).forEach(([typeId, val]) => {
+      if (val > bestScore) {
+        bestScore = val;
+        bestTypeId = typeId;
+      }
+    });
+
+    return { bestType: TYPE_DEFS[bestTypeId], score };
+  }
+
+  // ----- 결과 렌더링 (심플 버전) -----
+  function renderResult() {
+    const { bestType } = calculateResult();
+
+    // 상단 텍스트
+    document.getElementById("result-type-kr").textContent = bestType.labelKr;
+    document.getElementById("result-type-en").textContent =
+      `${bestType.labelEn} ${bestType.emoji}`;
+
+    // 간단 설명
+    document.getElementById("result-description").textContent =
+      `${bestType.concept} 취향의 콘텐츠를 좋아하는 타입이에요!`;
+
+    // 3가지 포인트 (키워드 3개 사용)
+    const points = bestType.keywords.slice(0, 3);
+    document.getElementById("point-1").textContent = points[0] || "";
+    document.getElementById("point-2").textContent = points[1] || "";
+    document.getElementById("point-3").textContent = points[2] || "";
+
+    // Typely 추천 작품 (가짜 작품 3개)
+    const fakeWorks = [
+      `⚡ 웹툰 · 《${bestType.labelKr} 모드 발동!》`,
+      `📚 웹소설 · 《${bestType.labelEn} 클래스의 등장》`,
+      `🔥 웹툰 · 《${bestType.emoji} ${bestType.labelKr}의 비밀 에피소드》`
+    ];
+
+    const recommendEl = document.getElementById("recommend-list");
+    recommendEl.innerHTML = fakeWorks.map(w => `<div>${w}</div>`).join("");
+
+    // 상태바 100%로
+    statusTextEl.textContent =
+      `${bestType.labelKr} (${bestType.labelEn}) 타입이 가장 강하게 나타났어요.`;
+    statusPercentEl.textContent = "100%";
+    statusBarFillEl.style.width = "100%";
+  }
+
+  // ----- 이벤트 핸들러 -----
+  startBtn.addEventListener("click", () => {
+    introCard.style.display = "none";
+    quizSection.style.display = "block";
+    resultSection.style.display = "none";
+    currentIndex = 0;
+    renderQuestion();
+    updateProgress();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+  scrollToTypesBtn.addEventListener("click", () => {
+    typeCloudEl.scrollIntoView({ behavior: "smooth", block: "center" });
+  });
+
+  prevBtn.addEventListener("click", () => {
+    if (currentIndex === 0) return;
+    currentIndex -= 1;
+    renderQuestion();
+    updateProgress();
+  });
+
+  nextBtn.addEventListener("click", () => {
+    if (answers[currentIndex] == null) return;
+
+    if (currentIndex === QUESTIONS.length - 1) {
+      quizSection.style.display = "none";
+      resultSection.style.display = "block";
+      renderResult();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      currentIndex += 1;
+      renderQuestion();
+      updateProgress();
+    }
+  });
+
+  restartBtn.addEventListener("click", () => {
+    for (let i = 0; i < answers.length; i++) answers[i] = null;
+    currentIndex = 0;
+    introCard.style.display = "block";
+    quizSection.style.display = "none";
+    resultSection.style.display = "none";
+    updateProgress();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+  // 최초 상태
+  updateProgress();
+</script>
+</body>
+</html>
